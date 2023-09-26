@@ -3,7 +3,12 @@
 
 #include "Link.hxx"
 
-Link::Link(std::string sLinkIp)
+Link::Link(std::string sLinkIp) : m_sLinkIp(sLinkIp)
+{
+    Reset();
+}
+
+void Link::Reset()
 {
 }
 
@@ -19,12 +24,17 @@ void Link::InitPwmInput(int nChannel)
 {
 }
 
-void Link::InitTalon(enum TalonType talonType, int nCanId, bool bInvertEncoder, std::vector<std::tuple<int, double, double, double, double>> *pvecPidfs)
+void Link::InitTalon(enum TalonType talonType, int nCanId, bool bInvert, bool bInvertEncoder, std::vector<std::tuple<int, double, double, double, double>> *pvecPidfs)
 {
 }
 
 void Link::UpdateTalon(int nCanId, enum Link::DriveMode driveMode, double dSetpoint, bool bBreakMode)
 {
+}
+
+enum Link::Mode GetMode()
+{
+    return Link::Mode::Unknown;
 }
 
 double Link::GetNavXHeading()
