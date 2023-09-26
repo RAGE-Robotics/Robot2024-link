@@ -7,6 +7,14 @@ void Robot::RobotInit()
 {
 }
 
-void Robot::RobotPeriodic()
+void Robot::DisabledInit()
+{
+}
+
+void Robot::AutonomousInit()
+{
+}
+
+void Robot::TeleopInit()
 {
 }
