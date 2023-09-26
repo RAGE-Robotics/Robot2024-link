@@ -7,6 +7,6 @@ set(CMAKE_CXX_STANDARD 11)
 
 add_subdirectory(External/eigen)
 
-add_executable(Robot2024 Source/Main.cxx)
+add_executable(Robot2024 Source/Main.cxx Source/Link.cxx)
 target_include_directories(Robot2024 PRIVATE Include)
 target_link_libraries(Robot2024 PRIVATE Eigen3::Eigen)
