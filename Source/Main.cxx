@@ -1,5 +1,5 @@
-// Author: Caleb Heydon <probablyme@caleb.engineer>
-// License: GPL-3.0
+// Authors: Caleb Heydon <probablyme@caleb.engineer>
+// License: Unlicense
 
 int main()
 {

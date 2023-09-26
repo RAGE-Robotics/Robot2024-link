@@ -1,5 +1,5 @@
-// Author: Caleb Heydon <probablyme@caleb.engineer>
-// License: GPL-3.0
+// Authors: Caleb Heydon <probablyme@caleb.engineer>
+// License: Unlicense
 
 #include <string>
 #include <vector>
@@ -24,6 +24,8 @@ public:
     };
 
     Link(std::string sLinkIp = Constants::sLinkIp);
+
+    void Destroy();
 
     void InitNavX();
     void InitPwmInput(int nChannel);

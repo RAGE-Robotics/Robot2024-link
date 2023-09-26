@@ -1,9 +1,13 @@
-// Author: Caleb Heydon <probablyme@caleb.engineer>
-// License: GPL-3.0
+// Authors: Caleb Heydon <probablyme@caleb.engineer>
+// License: Unlicense
 
 #include "Link.hxx"
 
 Link::Link(std::string sLinkIp)
+{
+}
+
+void Link::Destroy()
 {
 }
 
