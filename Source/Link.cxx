@@ -4,6 +4,12 @@
 #include "Link.hxx"
 
 #include <cstring>
+#include <barrier>
+#include <stdexcept>
+
+#ifdef _WIN32
+#include <WinSock2.h>
+#endif
 
 Link::Link(std::string sLinkIp) : m_sLinkIp(sLinkIp)
 {
@@ -25,10 +31,40 @@ void Link::Reset()
     }
     m_bStop = false;
 
-    m_threadTcp = std::thread([this]
-                              {while (!m_bStop); });
-    m_threadUdp = std::thread([this]
-                              {while (!m_bStop); });
+    std::barrier barrier(3);
+    m_threadTcp = std::thread([this, &barrier]
+                              {
+                                  m_nTcpFd = socket(AF_INET, SOCK_STREAM, 0);
+                                  if (m_nTcpFd == -1)
+                                      throw std::runtime_error("failed to create socket");
+                                  barrier.arrive_and_wait();
+
+                                  while (!m_bStop)
+                                      ;
+
+#ifdef _WIN32
+                                  closesocket(m_nTcpFd);
+#else
+                                  close(m_TcpFd);
+#endif
+                              });
+    m_threadUdp = std::thread([this, &barrier]
+                              {
+                                  m_nUdpFd = socket(AF_INET, SOCK_DGRAM, 0);
+                                  if (m_nUdpFd == -1)
+                                      throw std::runtime_error("failed to create socket");
+                                  barrier.arrive_and_wait();
+
+                                  while (!m_bStop)
+                                      ;
+
+#ifdef _WIN32
+                                  closesocket(m_nTcpFd);
+#else
+                                  close(m_TcpFd);
+#endif
+                              });
+    barrier.arrive_and_wait();
 }
 
 void Link::Destroy()
