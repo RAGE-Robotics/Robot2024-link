@@ -68,6 +68,7 @@ public:
     double GetTalonVelocity(int nCanId);
     double GetTalonPosition(int nCanId);
     struct GamepadState GetGamepadState(int nId);
+    std::string GetAutonomousMode();
 
 private:
     std::string m_sLinkIp;
@@ -101,4 +102,5 @@ private:
     std::map<int, double> m_mapTalonVelocities;
     std::map<int, double> m_mapTalonPositions;
     std::map<int, struct GamepadState> m_mapGamepadStates;
+    std::string m_sAutonomousMode = "Unknown";
 };
