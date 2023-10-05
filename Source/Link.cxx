@@ -139,7 +139,7 @@ struct Link::GamepadState Link::GetGamepadState(int nId)
 {
     struct Link::GamepadState gamepadState;
     std::memset(&gamepadState, 0, sizeof(gamepadState));
-    gamepadState.nId = nId;
+    gamepadState.nId = -1;
     gamepadState.nDPad = -1;
     gamepadState.dTriggerLeft = gamepadState.dTriggerRight = -1;
     gamepadState.tJoystickLeft = gamepadState.tJoystickRight = std::tuple<double, double>(-1, -1);
