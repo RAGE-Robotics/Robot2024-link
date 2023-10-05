@@ -20,7 +20,8 @@ public:
         Unknown,
         Disabled,
         Autonomous,
-        Teleop
+        Teleop,
+        Test
     };
 
     enum TalonType
