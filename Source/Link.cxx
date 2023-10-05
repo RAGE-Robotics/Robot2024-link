@@ -6,6 +6,7 @@
 #include <cstring>
 #include <barrier>
 #include <stdexcept>
+#include <algorithm>
 
 #ifdef _WIN32
 #include <WinSock2.h>
@@ -87,21 +88,25 @@ void Link::InitNavX()
 void Link::InitPwmInput(int nChannel)
 {
     m_mutexInits.lock();
-    m_vecPwms.push_back(nChannel);
+    if (std::find(m_vecPwms.begin(), m_vecPwms.end(), nChannel) != m_vecPwms.end())
+        m_vecPwms.push_back(nChannel);
     m_mutexInits.unlock();
 }
 
 void Link::InitTalon(enum TalonType talonType, int nCanId, bool bInvert, bool bInvertEncoder, std::vector<std::tuple<int, double, double, double, double>> vecPidfs)
 {
     m_mutexInits.lock();
-    m_vecTalons.push_back(std::tuple<int, int, bool, bool, std::vector<std::tuple<int, double, double, double, double>>>(talonType, nCanId, bInvert, bInvertEncoder, vecPidfs));
+    auto tTalonInfo = std::tuple<int, int, bool, bool, std::vector<std::tuple<int, double, double, double, double>>>(talonType, nCanId, bInvert, bInvertEncoder, vecPidfs);
+    if (std::find(m_vecTalons.begin(), m_vecTalons.end(), tTalonInfo) != m_vecTalons.end())
+        m_vecTalons.push_back(tTalonInfo);
     m_mutexInits.unlock();
 }
 
 void Link::InitGamepad(int nId)
 {
     m_mutexInits.lock();
-    m_vecGamepads.push_back(nId);
+    if (std::find(m_vecGamepads.begin(), m_vecGamepads.end(), nId) != m_vecGamepads.end())
+        m_vecGamepads.push_back(nId);
     m_mutexInits.unlock();
 }
 
