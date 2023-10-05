@@ -11,7 +11,7 @@
 #include <WinSock2.h>
 #endif
 
-Link::Link(std::string sLinkIp) : m_sLinkIp(sLinkIp)
+Link::Link(std::vector<std::string> vecAutoModes, std::string sLinkIp) : m_vecAutoModes(vecAutoModes), m_sLinkIp(sLinkIp)
 {
     m_bStop = true;
 
@@ -192,7 +192,7 @@ struct Link::GamepadState Link::GetGamepadState(int nId)
     return gamepadState;
 }
 
-std::string Link::GetAutonomousMode()
+std::string Link::GetAutoMode()
 {
     std::string sAutonomousMode;
     m_mutexTcpReceive.lock();

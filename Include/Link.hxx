@@ -47,7 +47,7 @@ public:
         std::tuple<double, double> tJoystickLeft, tJoystickRight;
     };
 
-    Link(std::string sLinkIp = Constants::pszLinkIp);
+    Link(std::vector<std::string> vecAutoModes, std::string sLinkIp = Constants::pszLinkIp);
 
     void Reset();
     void Destroy();
@@ -68,9 +68,10 @@ public:
     double GetTalonVelocity(int nCanId);
     double GetTalonPosition(int nCanId);
     struct GamepadState GetGamepadState(int nId);
-    std::string GetAutonomousMode();
+    std::string GetAutoMode();
 
 private:
+    std::vector<std::string> m_vecAutoModes;
     std::string m_sLinkIp;
     int m_nTcpFd;
     int m_nUdpFd;
@@ -102,5 +103,5 @@ private:
     std::map<int, double> m_mapTalonVelocities;
     std::map<int, double> m_mapTalonPositions;
     std::map<int, struct GamepadState> m_mapGamepadStates;
-    std::string m_sAutonomousMode = "Unknown";
+    std::string m_sAutonomousMode = "";
 };

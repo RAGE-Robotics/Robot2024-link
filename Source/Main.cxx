@@ -3,6 +3,9 @@
 
 #include "Link.hxx"
 
+#include <vector>
+#include <string>
+
 #ifdef _WIN32
 #include <WinSock2.h>
 #include <stdexcept>
@@ -16,7 +19,8 @@ int main()
         throw std::runtime_error("failed to initialize winsock");
 #endif
 
-    Link link;
+    std::vector<std::string> vecAutoModes = {"Default"};
+    Link link(vecAutoModes);
 
     while (true)
         ;
