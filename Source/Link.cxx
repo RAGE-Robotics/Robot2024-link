@@ -1,5 +1,5 @@
 // Authors: Caleb Heydon <probablyme@caleb.engineer>
-// License: Unlicense
+// License: CC0-1.0
 
 #include "Link.hxx"
 
