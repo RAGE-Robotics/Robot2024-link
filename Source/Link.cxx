@@ -159,8 +159,8 @@ struct Link::GamepadState Link::GetGamepadState(int nId)
 std::string Link::GetAutonomousMode()
 {
     std::string sAutonomousMode;
-    m_mutexUdpReceive.lock();
+    m_mutexTcpReceive.lock();
     sAutonomousMode = m_sAutonomousMode;
-    m_mutexUdpReceive.unlock();
+    m_mutexTcpReceive.unlock();
     return sAutonomousMode;
 }
