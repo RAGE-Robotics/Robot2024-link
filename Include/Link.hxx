@@ -13,19 +13,6 @@
 
 class Link
 {
-private:
-    std::string m_sLinkIp;
-    int m_nTcpFd = -1;
-    int m_nUdpFd = -1;
-
-    std::mutex m_mutexSend;
-    std::atomic<bool> m_bDestroy;
-
-    std::thread m_threadTcp;
-    std::thread m_threadUdp;
-
-    std::function<void(struct GamepadState)> m_funcGamepadCallback;
-
 public:
     enum Mode
     {
@@ -58,17 +45,17 @@ public:
         std::tuple<double, double> tJoystickLeft, tJoystickRight;
     };
 
-    Link(std::string sLinkIp = Constants::sLinkIp);
+    Link(std::string sLinkIp = Constants::pszLinkIp);
 
     void Reset();
     void Destroy();
 
     void InitNavX();
     void InitPwmInput(int nChannel);
-    void InitTalon(enum TalonType talonType, int nCanId, bool bInvert = false, bool bInvertEncoder = false, std::vector<std::tuple<int, double, double, double, double>> *pvecPidfs = nullptr);
+    void InitTalon(enum TalonType talonType, int nCanId, bool bInvert = false, bool bInvertEncoder = false, std::vector<std::tuple<int, double, double, double, double>> vecPidfs = std::vector<std::tuple<int, double, double, double, double>>());
     void InitGamepad(int nId);
 
-    void SetGamepadCallback(std::function<void(struct GamepadState)>);
+    void SetGamepadCallback(std::function<void(struct GamepadState)> funcGamepadCallback);
 
     void UpdateTalon(int nCanId, enum DriveMode driveMode, double dSetpoint, bool bBreakMode = false);
 
@@ -78,4 +65,29 @@ public:
     double GetTalonVelocity(int nCanId);
     double GetTalonPosition(int nCanId);
     struct GamepadState GetGamepadState(int nId);
+
+private:
+    std::string m_sLinkIp;
+    int m_nTcpFd;
+    int m_nUdpFd;
+
+    std::atomic<bool> m_bStop;
+
+    std::mutex m_mutexSend;
+    std::mutex m_mutexTcpReceive;
+    std::mutex m_mutexUdpReceive;
+
+    std::thread m_threadTcp;
+    std::thread m_threadUdp;
+
+    std::mutex m_mutexGamepadCallback;
+    std::function<void(struct GamepadState)> m_funcGamepadCallback;
+
+    std::mutex m_mutexInits;
+    bool m_bNavX = false;
+    std::vector<int> m_vecPwms;
+    std::vector<std::tuple<int, int, bool, bool, std::vector<std::tuple<int, double, double, double, double>>>> m_vecTalons;
+    std::vector<int> m_vecGamepads;
+
+    enum Mode m_mode = Mode::Unknown;
 };

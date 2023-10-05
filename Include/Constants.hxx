@@ -4,5 +4,5 @@
 class Constants
 {
 public:
-    static constexpr const char *sLinkIp = "10.1.73.2";
+    static constexpr const char *pszLinkIp = "10.1.73.2";
 };
