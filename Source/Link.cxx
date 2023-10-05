@@ -10,6 +10,8 @@
 
 #ifdef _WIN32
 #include <WinSock2.h>
+#else
+#include <sys/socket.h>
 #endif
 
 Link::Link(std::vector<std::string> vecAutoModes, std::string sLinkIp) : m_vecAutoModes(vecAutoModes), m_sLinkIp(sLinkIp)
@@ -46,7 +48,7 @@ void Link::Reset()
 #ifdef _WIN32
                                   closesocket(m_nTcpFd);
 #else
-                                  close(m_TcpFd);
+                                  close(m_nTcpFd);
 #endif
                               });
     m_threadUdp = std::thread([this, &barrier]
@@ -62,7 +64,7 @@ void Link::Reset()
 #ifdef _WIN32
                                   closesocket(m_nTcpFd);
 #else
-                                  close(m_TcpFd);
+                                  close(m_nTcpFd);
 #endif
                               });
     barrier.arrive_and_wait();
