@@ -73,7 +73,7 @@ private:
 
     std::atomic<bool> m_bStop;
 
-    std::mutex m_mutexSend;
+    std::mutex m_mutexTcpWrite;
     std::mutex m_mutexTcpReceive;
     std::mutex m_mutexUdpReceive;
 

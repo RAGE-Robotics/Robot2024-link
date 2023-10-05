@@ -22,6 +22,11 @@ void Link::Reset()
             m_threadUdp.join();
     }
     m_bStop = false;
+
+    m_threadTcp = std::thread([this]
+                              {while (!m_bStop); });
+    m_threadUdp = std::thread([this]
+                              {while (!m_bStop); });
 }
 
 void Link::Destroy()
