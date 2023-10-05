@@ -3,6 +3,8 @@
 
 #include "Link.hxx"
 
+#include <cstring>
+
 Link::Link(std::string sLinkIp) : m_sLinkIp(sLinkIp)
 {
     m_bStop = true;
@@ -96,28 +98,60 @@ enum Link::Mode Link::GetMode()
 
 double Link::GetNavXHeading()
 {
-    return 0;
+    double dHeading;
+    m_mutexUdpReceive.lock();
+    dHeading = m_dNavXHeading;
+    m_mutexUdpReceive.unlock();
+    return dHeading;
 }
 
 double Link::GetPwmInput(int nChannel)
 {
-    return 0;
+    double dValue = -1;
+    m_mutexUdpReceive.lock();
+    if (m_mapPwmInputs.find(nChannel) != m_mapPwmInputs.end())
+        dValue = m_mapPwmInputs[nChannel];
+    m_mutexUdpReceive.unlock();
+    return dValue;
 }
 
 double Link::GetTalonVelocity(int nCanId)
 {
-    return 0;
+    double dValue = -1;
+    m_mutexUdpReceive.lock();
+    if (m_mapTalonVelocities.find(nCanId) != m_mapTalonVelocities.end())
+        dValue = m_mapTalonVelocities[nCanId];
+    m_mutexUdpReceive.unlock();
+    return dValue;
 }
 
 double Link::GetTalonPosition(int nCanId)
 {
-    return 0;
+    double dValue = -1;
+    m_mutexUdpReceive.lock();
+    if (m_mapTalonPositions.find(nCanId) != m_mapTalonPositions.end())
+        dValue = m_mapTalonPositions[nCanId];
+    m_mutexUdpReceive.unlock();
+    return dValue;
 }
 
 struct Link::GamepadState Link::GetGamepadState(int nId)
 {
     struct Link::GamepadState gamepadState;
+    std::memset(&gamepadState, 0, sizeof(gamepadState));
     gamepadState.nId = nId;
+    gamepadState.nDPad = -1;
+    gamepadState.dTriggerLeft = gamepadState.dTriggerRight = -1;
+    gamepadState.tJoystickLeft = gamepadState.tJoystickRight = std::tuple<double, double>(-1, -1);
+
+    m_mutexTcpReceive.lock();
+    m_mutexUdpReceive.lock();
+
+    if (m_mapGamepadStates.find(nId) != m_mapGamepadStates.end())
+        gamepadState = m_mapGamepadStates[nId];
+
+    m_mutexUdpReceive.unlock();
+    m_mutexTcpReceive.unlock();
 
     return gamepadState;
 }

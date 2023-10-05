@@ -8,6 +8,7 @@
 #include <mutex>
 #include <atomic>
 #include <functional>
+#include <map>
 
 #include "Constants.hxx"
 
@@ -94,4 +95,9 @@ private:
     std::vector<int> m_vecGamepads;
 
     enum Mode m_mode = Mode::Unknown;
+    double m_dNavXHeading = 0;
+    std::map<int, double> m_mapPwmInputs;
+    std::map<int, double> m_mapTalonVelocities;
+    std::map<int, double> m_mapTalonPositions;
+    std::map<int, struct GamepadState> m_mapGamepadStates;
 };
