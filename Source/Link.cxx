@@ -28,6 +28,14 @@ void Link::InitTalon(enum TalonType talonType, int nCanId, bool bInvert, bool bI
 {
 }
 
+void Link::InitGamepad(int nId)
+{
+}
+
+void Link::SetGamepadCallback(std::function<void(struct Link::GamepadState)>)
+{
+}
+
 void Link::UpdateTalon(int nCanId, enum Link::DriveMode driveMode, double dSetpoint, bool bBreakMode)
 {
 }
@@ -55,4 +63,12 @@ double Link::GetTalonVelocity(int nCanId)
 double Link::GetTalonPosition(int nCanId)
 {
     return 0;
+}
+
+struct Link::GamepadState Link::GetGamepadState(int nId)
+{
+    struct Link::GamepadState gamepadState;
+    gamepadState.nId = nId;
+
+    return gamepadState;
 }

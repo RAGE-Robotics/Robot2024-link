@@ -6,6 +6,8 @@
 #include <tuple>
 #include <thread>
 #include <mutex>
+#include <atomic>
+#include <functional>
 
 #include "Constants.hxx"
 
@@ -13,14 +15,16 @@ class Link
 {
 private:
     std::string m_sLinkIp;
-    int m_nTcpFd;
-    int m_nUdpFd;
+    int m_nTcpFd = -1;
+    int m_nUdpFd = -1;
 
     std::mutex m_mutexSend;
-    bool m_bDestroy = false;
+    std::atomic<bool> m_bDestroy;
 
     std::thread m_threadTcp;
     std::thread m_threadUdp;
+
+    std::function<void(struct GamepadState)> m_funcGamepadCallback;
 
 public:
     enum Mode
@@ -44,6 +48,16 @@ public:
         Position
     };
 
+    struct GamepadState
+    {
+        int nId;
+        bool bA, bB, bX, bY;
+        int nDPad;
+        bool bShoulderLeft, bShoulderRight;
+        double dTriggerLeft, dTriggerRight;
+        std::tuple<double, double> tJoystickLeft, tJoystickRight;
+    };
+
     Link(std::string sLinkIp = Constants::sLinkIp);
 
     void Reset();
@@ -52,6 +66,9 @@ public:
     void InitNavX();
     void InitPwmInput(int nChannel);
     void InitTalon(enum TalonType talonType, int nCanId, bool bInvert = false, bool bInvertEncoder = false, std::vector<std::tuple<int, double, double, double, double>> *pvecPidfs = nullptr);
+    void InitGamepad(int nId);
+
+    void SetGamepadCallback(std::function<void(struct GamepadState)>);
 
     void UpdateTalon(int nCanId, enum DriveMode driveMode, double dSetpoint, bool bBreakMode = false);
 
@@ -60,4 +77,5 @@ public:
     double GetPwmInput(int nChannel);
     double GetTalonVelocity(int nCanId);
     double GetTalonPosition(int nCanId);
+    struct GamepadState GetGamepadState(int nId);
 };

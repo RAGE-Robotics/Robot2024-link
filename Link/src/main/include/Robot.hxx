@@ -1,4 +1,4 @@
-// Author: Caleb Heydon <probablyme@caleb.engineer>
+// Authors: Caleb Heydon <probablyme@caleb.engineer>
 // License: CC0-1.0
 
 #pragma once
