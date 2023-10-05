@@ -7,5 +7,8 @@ int main()
 {
     Link link;
 
+    while (true)
+        ;
+
     return 0;
 }
