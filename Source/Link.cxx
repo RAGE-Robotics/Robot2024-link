@@ -67,6 +67,13 @@ void Link::InitGamepad(int nId)
     m_mutexInits.unlock();
 }
 
+void Link::SetModeCallback(std::function<void(enum Mode)> funcModeCallback)
+{
+    m_mutexModeCallback.lock();
+    m_funcModeCallback = funcModeCallback;
+    m_mutexModeCallback.unlock();
+}
+
 void Link::SetGamepadCallback(std::function<void(struct Link::GamepadState)> funcGamepadCallback)
 {
     m_mutexGamepadCallback.lock();

@@ -55,6 +55,7 @@ public:
     void InitTalon(enum TalonType talonType, int nCanId, bool bInvert = false, bool bInvertEncoder = false, std::vector<std::tuple<int, double, double, double, double>> vecPidfs = std::vector<std::tuple<int, double, double, double, double>>());
     void InitGamepad(int nId);
 
+    void SetModeCallback(std::function<void(enum Mode)> funcModeCallback);
     void SetGamepadCallback(std::function<void(struct GamepadState)> funcGamepadCallback);
 
     void UpdateTalon(int nCanId, enum DriveMode driveMode, double dSetpoint, bool bBreakMode = false);
@@ -79,6 +80,9 @@ private:
 
     std::thread m_threadTcp;
     std::thread m_threadUdp;
+
+    std::mutex m_mutexModeCallback;
+    std::function<void(enum Mode)> m_funcModeCallback;
 
     std::mutex m_mutexGamepadCallback;
     std::function<void(struct GamepadState)> m_funcGamepadCallback;
